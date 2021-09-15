@@ -92,15 +92,25 @@ void ICACHE_FLASH_ATTR user_pre_init(void)
 #define uart_recvTaskQueueLen    10
 os_event_t    uart_recvTaskQueue[uart_recvTaskQueueLen];
 
- 
+//if the connection is done, init the udp, 
+// if event is not used, it tries to init udp when it has not connected to ap yet
+void ICACHE_FLASH_ATTR wifi_handle_event_cb(System_Event_t *evt){
+	os_printf("event %x\n", evt->event);
+	switch (evt->event) {
+		case EVENT_STAMODE_CONNECTED:
+			user_udp_init();
+			break;
+	}
+}
+
  
 void ICACHE_FLASH_ATTR
 user_init(void)
 {
 	uart_init(115200,115200);
 	os_printf("basladi\n");
-	user_connect_ap();
-	user_udp_init();
-	system_os_task(uart_recv_storeTask, uart_recvTaskPrio, uart_recvTaskQueue, uart_recvTaskQueueLen);
+	user_connect_ap();// connect to app
+		
+	wifi_set_event_handler_cb(wifi_handle_event_cb);// set wifi event handler to wait untill connection is done 
 }
 
