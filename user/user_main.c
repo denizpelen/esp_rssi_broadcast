@@ -1,4 +1,4 @@
-/*
+ /*
 
  * ESPRESSIF MIT License
  *
@@ -22,6 +22,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+ 
+ #include "os_type.h"
 #include "ets_sys.h"
 #include "osapi.h"
 #include "wifi_connection.h"
@@ -86,12 +88,19 @@ void ICACHE_FLASH_ATTR user_pre_init(void)
  * @brief Test i2c interfaces.
  *
  */
+#define uart_recvTaskPrio        0
+#define uart_recvTaskQueueLen    10
+os_event_t    uart_recvTaskQueue[uart_recvTaskQueueLen];
+
+ 
+ 
 void ICACHE_FLASH_ATTR
 user_init(void)
 {
 	uart_init(115200,115200);
 	os_printf("basladi\n");
 	user_connect_ap();
-	///user_udp_init();
+	user_udp_init();
+	system_os_task(uart_recv_storeTask, uart_recvTaskPrio, uart_recvTaskQueue, uart_recvTaskQueueLen);
 }
 
