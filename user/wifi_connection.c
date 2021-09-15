@@ -27,7 +27,7 @@ deniz pelen
 
 ////// for the udp
 
-static uint8_t ipAddr[] = { 192, 168, 43, 1 };// ip address of the receiver
+static uint8_t ipAddr[] = { 192, 168, 43, 240 };// ip address of the receiver
 static struct espconn espConn ;
 static  esp_udp espProto ;
 static os_timer_t udpServerTimer;
@@ -44,7 +44,7 @@ static esp_tcp tcpProto;
 
 
 static uint8 message[128] = "merhaba";
-static uint8 msg[5] = "12345";
+static uint8 msg[3] = "123";
 
 uint8_t conn_status;
 /*************************************
